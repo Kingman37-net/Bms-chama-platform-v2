@@ -4,64 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live Meetings & Chat | BODMAS Chamaa</title>
-<style>
-:root {
-    --sea-blue:#0b7fab;
-    --orange:#f7931e;
-    --black:#111;
-    --white:#fff;
-}
-body{margin:0;font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f8fb;color:var(--black);}
-header{background:linear-gradient(135deg,var(--sea-blue),var(--orange));color:white;padding:60px 20px;text-align:center;}
-header h1{font-size:2.5rem;margin-bottom:10px;}
-header p{font-size:1.1rem;}
-.container{max-width:1000px;margin:40px auto;padding:0 20px;}
-.section{background:white;padding:30px;margin-bottom:25px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.08);}
-.section h2{color:var(--sea-blue);margin-top:0;}
-a.button{display:inline-block;padding:12px 25px;background:var(--orange);color:var(--black);border-radius:30px;text-decoration:none;font-weight:bold;margin:5px 0;transition:all 0.3s ease;}
-a.button:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,0.25);}
-iframe{width:100%;height:400px;border:none;border-radius:12px;margin-bottom:20px;}
-.footer{background:var(--black);color:white;text-align:center;padding:30px 15px;margin-top:50px;}
-.footer strong{color:var(--orange);}
-.floating-whatsapp{position:fixed;bottom:25px;right:25px;background:#25D366;color:white;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;font-size:30px;box-shadow:0 6px 15px rgba(0,0,0,0.3);z-index:999;text-decoration:none;}
-.countdown{font-size:1.2rem;font-weight:bold;color:var(--sea-blue);}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;}
-.box{background:var(--sea-blue);color:white;padding:20px;border-radius:12px;text-align:center;transition:all 0.3s ease;}
-.box:hover{background:var(--orange);color:var(--black);transform:translateY(-6px);}
-.chat-container{background:#eef6fb;padding:15px;border-radius:12px;max-height:350px;overflow-y:auto;margin-bottom:15px;border:1px solid #ccc;}
-.chat-message{padding:8px 12px;margin-bottom:8px;background:#fff;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.08);}
-.chat-input-container{display:flex;gap:10px;}
-.chat-input-container input{flex:1;padding:10px;border-radius:8px;border:1px solid #ccc;}
-.chat-input-container button{padding:10px 20px;background:var(--orange);color:#000;border:none;border-radius:8px;font-weight:bold;cursor:pointer;transition:0.3s;}
-.chat-input-container button:hover{background:var(--sea-blue);color:#fff;}
-</style>
+
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <nav class="navbar">
   <div class="nav-container">
     <div class="logo">
-      <a href="index.html"><img src="https://i.ibb.co/d4vff5ts/logo.png" alt="BODMAS" height="40"></a>
+      <a href="index.html">
+        <img src="https://i.ibb.co/d4vff5ts/logo.png" alt="BODMAS CHAMAA" height="40">
+      </a>
     </div>
+
+    <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
     <ul class="nav-menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="member-portal.html">Portal</a></li>
+      <li><a href="membership.html">Membership</a></li>
       <li><a href="savings.html">Savings</a></li>
-      <li><a href="service.html">Services</a></li>
-      <li><a href="project-and-investment.html">Projects</a></li>
-      <li><a href="Live-meetings.html">Meetings</a></li>
-      <li><a href="Resources-page.html">Resources</a></li>
-      <li><a href="privacy-policy.html">Privacy</a></li>
-      <li><a href="terms-conditions.html">Terms</a></li>
+      <li><a href="loans.html">Loans</a></li>
+      <li><a href="investments.html">Investments</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="meetings.html">Meetings</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="../member/index.html" class="nav-cta">Member Login</a></li>
     </ul>
-    <div class="hamburger">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
   </div>
 </nav>
+
+
 
 
 <header>
@@ -107,11 +85,7 @@ iframe{width:100%;height:400px;border:none;border-radius:12px;margin-bottom:20px
 
 <a href="https://chat.whatsapp.com/F8Yd3aqsPbl6EiQJwkCpT5?mode=gi_t" target="_blank" class="floating-whatsapp">💬</a>
 
-<footer class="footer">
-<p><strong>BODMAS CHAMAA</strong></p>
-<p>Registered Self-Help Group – Kenya</p>
-<p>© 2026 BODMAS Chamaa. All Rights Reserved.</p>
-</footer>
+
 
 <script>
 // Countdown Timer
@@ -149,16 +123,24 @@ chatInput.addEventListener("keypress", (e) => {
 });
 </script>
 
+
+
+  <script src="assets/js/main.js" defer></script>
 <footer>
   <p><strong>BODMAS CHAMAA</strong></p>
-  <p>Registered Self-Help Group – Kenya</p>
+  <p>Registered Self-Help Group &ndash; Kenya</p>
+  <p>Count Well &bull; Live Better</p>
   <p>
-    Email: bodmaschamaa@gmail.com<br>
-    Phone: +254 726145371<br>
-    Location: BAMBURI MOMBASA, Kenya
+    Email: <a href="mailto:bodmaschamaa@gmail.com">bodmaschamaa@gmail.com</a><br>
+    Phone: <a href="tel:+254726145371">+254 726 145 371</a><br>
+    Location: Bamburi, Mombasa, Kenya
   </p>
-  <p>© 2026 BODMAS Chamaa. All Rights Reserved.</p>
+  <p>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="terms-conditions.html">Terms &amp; Conditions</a> &nbsp;|&nbsp;
+    <a href="faq.html">FAQ</a>
+  </p>
+  <p>&copy; 2026 BODMAS Chamaa. All Rights Reserved.</p>
 </footer>
-
 </body>
 </html>

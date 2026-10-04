@@ -5,149 +5,43 @@
     <title>Projects & Investments | BODMAS CHAMAA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        :root {
-            --sea-blue: #0b7fab;
-            --orange: #f7931e;
-            --black: #111111;
-            --white: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-        }
-
-        body {
-            background: var(--white);
-            color: var(--black);
-            line-height: 1.8;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--sea-blue), #094e6b);
-            color: white;
-            padding: 70px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2.6rem;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-        }
-
-        section {
-            max-width: 1150px;
-            margin: auto;
-            padding: 60px 20px;
-        }
-
-        .section-title {
-            color: var(--sea-blue);
-            text-align: center;
-            font-size: 2.1rem;
-            margin-bottom: 35px;
-        }
-
-        .card {
-            background: white;
-            border-left: 6px solid var(--orange);
-            padding: 35px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            margin-bottom: 35px;
-            animation: fadeUp 0.9s ease;
-        }
-
-        .highlight {
-            background: var(--sea-blue);
-            color: white;
-            padding: 35px;
-            border-radius: 12px;
-            margin-bottom: 35px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .box {
-            background: var(--white);
-            border: 2px solid var(--sea-blue);
-            padding: 30px;
-            border-radius: 12px;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-
-        .box:hover {
-            background: var(--sea-blue);
-            color: white;
-            transform: translateY(-6px);
-        }
-
-        ul {
-            margin-left: 20px;
-        }
-
-        footer {
-            background: var(--black);
-            color: white;
-            text-align: center;
-            padding: 30px 15px;
-        }
-
-        footer span {
-            color: var(--orange);
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
 <nav class="navbar">
   <div class="nav-container">
     <div class="logo">
-      <a href="index.html"><img src="https://i.ibb.co/d4vff5ts/logo.png" alt="BODMAS" height="40"></a>
+      <a href="index.html">
+        <img src="https://i.ibb.co/d4vff5ts/logo.png" alt="BODMAS CHAMAA" height="40">
+      </a>
     </div>
+
+    <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
     <ul class="nav-menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="member-portal.html">Portal</a></li>
+      <li><a href="membership.html">Membership</a></li>
       <li><a href="savings.html">Savings</a></li>
-      <li><a href="service.html">Services</a></li>
-      <li><a href="project-and-investment.html">Projects</a></li>
-      <li><a href="Live-meetings.html">Meetings</a></li>
-      <li><a href="Resources-page.html">Resources</a></li>
-      <li><a href="privacy-policy.html">Privacy</a></li>
-      <li><a href="terms-conditions.html">Terms</a></li>
+      <li><a href="loans.html">Loans</a></li>
+      <li><a href="investments.html">Investments</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="meetings.html">Meetings</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="../member/index.html" class="nav-cta">Member Login</a></li>
     </ul>
-    <div class="hamburger">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
   </div>
 </nav>
+
+
 
 
 <header>
@@ -274,16 +168,24 @@
 
 
 
+
+
+  <script src="assets/js/main.js" defer></script>
 <footer>
   <p><strong>BODMAS CHAMAA</strong></p>
-  <p>Registered Self-Help Group – Kenya</p>
+  <p>Registered Self-Help Group &ndash; Kenya</p>
+  <p>Count Well &bull; Live Better</p>
   <p>
-    Email: bodmaschamaa@gmail.com<br>
-    Phone: +254 726145371<br>
-    Location: BAMBURI MOMBASA, Kenya
+    Email: <a href="mailto:bodmaschamaa@gmail.com">bodmaschamaa@gmail.com</a><br>
+    Phone: <a href="tel:+254726145371">+254 726 145 371</a><br>
+    Location: Bamburi, Mombasa, Kenya
   </p>
-  <p>© 2026 BODMAS Chamaa. All Rights Reserved.</p>
+  <p>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="terms-conditions.html">Terms &amp; Conditions</a> &nbsp;|&nbsp;
+    <a href="faq.html">FAQ</a>
+  </p>
+  <p>&copy; 2026 BODMAS Chamaa. All Rights Reserved.</p>
 </footer>
-
 </body>
 </html>
