@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | BODMAS Member</title>
+  <link rel="stylesheet" href="assets/css/member.css">
+</head>
+<body class="member-body">
+<header class="member-topbar">
+  <button class="member-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <a href="dashboard.html" class="member-brand">
+    <img src="https://i.ibb.co/d4vff5ts/logo.png" alt="BODMAS" height="30">
+    <span>BODMAS Member</span>
+  </a>
+
+  <div class="member-user">
+    <span class="member-name">Member</span>
+    <a href="index.html" class="member-logout">Logout</a>
+  </div>
+</header>
+
+<aside class="member-sidebar" id="memberSidebar" aria-hidden="true">
+  <nav class="member-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="contributions.html">Contributions</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="loans.html">Loans</a>
+    <a href="repayments.html">Repayments</a>
+    <a href="statements.html">Statements</a>
+    <a href="investments.html">Investments</a>
+    <a href="welfare.html">Welfare</a>
+    <a href="fines.html">Fines</a>
+    <a href="meetings.html">Meetings</a>
+    <a href="documents.html">Documents</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="../docs/index.html" class="member-back">&larr; Public Site</a>
+  </nav>
+</aside>
+<div class="member-overlay" id="memberOverlay" hidden></div>
+
+
+  <main class="member-main">
+    <div class="member-page-header">
+      <h1>Welcome back, Member</h1>
+      <p>Here is your financial snapshot at a glance.</p>
+    </div>
+
+    <div class="member-stats">
+      <div class="member-stat">
+        <span class="label">Total Savings</span>
+        <span class="value">KSh 0</span>
+      </div>
+      <div class="member-stat orange">
+        <span class="label">Loan Balance</span>
+        <span class="value">KSh 0</span>
+      </div>
+      <div class="member-stat green">
+        <span class="label">This Month</span>
+        <span class="value">KSh 0</span>
+      </div>
+      <div class="member-stat red">
+        <span class="label">Outstanding</span>
+        <span class="value">KSh 0</span>
+      </div>
+    </div>
+
+    <div class="member-actions">
+      <a class="member-action" href="contributions.html">Contributions</a>
+      <a class="member-action" href="loans.html">My Loans</a>
+      <a class="member-action" href="statements.html">Statements</a>
+      <a class="member-action" href="notifications.html">Notifications</a>
+    </div>
+
+    <div class="member-card">
+      <h2>Recent Activity</h2>
+      <p>No activity yet. Contributions, repayments, fines and welfare will appear here once the backend is live (Phase 5).</p>
+    </div>
+
+    <div class="member-card">
+      <h2>Group Announcements</h2>
+      <p>Meeting schedules and resolutions from the committee will be published here.</p>
+    </div>
+  </main>
+
+  <script src="assets/js/member.js" defer></script>
+<footer class="member-footer">
+  <p>&copy; 2026 BODMAS CHAMAA &mdash; Member Portal</p>
+</footer>
+</body>
+</html>
