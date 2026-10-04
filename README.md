@@ -12,18 +12,18 @@ Currently in local development phase. Production site remains on legacy platform
 ### Features Roadmap
 - [x] Legacy export & localhost setup
 - [x] Link sanitization
-- [ ] Responsive UI redesign
-- [ ] Member dashboard
-- [ ] Contributions tracking
-- [ ] Deploy to Vercel
+- [x] Responsive UI redesign
+- [x] Member dashboard
+- [x] Contributions tracking
+- [x] Deploy to Vercel
 
 ### Run Locally
 ```bash
-python3 -m http.server 8080
-# -> http://localhost:8080
+python3 -m http.server 3000
+# -> http://localhost:3000
 ### Dev Notes
-- Dev environment: Termux (Android)
+- Dev environment: Termux
 - Status: WIP / Private build
-- By KDCN
+- By KENNEDY K KITANGA KINGMAN (KDCN)
 
-# Bms-chama-platform-v2
+# BMS-CHAMA-PLATFORM-V2(CHAMASOFT PLATFORM)
