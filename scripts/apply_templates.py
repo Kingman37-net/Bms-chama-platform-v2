@@ -107,7 +107,15 @@ def process_file(html_path: Path, zone: dict) -> bool:
             return True
         return False
 
+    # ROOT prefix — how many "../" to climb OUT of the zone to reach repo root
+    # depth 0 in member/admin means one "../" gets to root (sibling docs/)
+    if zone["name"] == "public":
+        root_prefix = ""  # public zone never references outside docs/
+    else:
+        root_prefix = "../" * (depth + 1)
+
     nav_html = (TEMPLATES / zone["nav_file"]).read_text(encoding="utf-8").strip()
+    nav_html = nav_html.replace("{{ROOT}}", root_prefix)
     nav_html = prefix_links(nav_html, prefix)
     content = re.sub(
         r"(<body[^>]*>)",
@@ -116,6 +124,7 @@ def process_file(html_path: Path, zone: dict) -> bool:
     )
 
     footer_html = (TEMPLATES / zone["footer_file"]).read_text(encoding="utf-8").strip()
+    footer_html = footer_html.replace("{{ROOT}}", root_prefix)
     footer_html = prefix_links(footer_html, prefix)
     content = re.sub(
         r"</body>",
