@@ -313,3 +313,146 @@ route('POST', '/contributions', async (ctx) => {
 
   return [201, { ok: true, data: result }];
 });
+
+// ---------------- POST /contributions/:id/reverse ----------------
+
+route('POST', '/contributions/{id}/reverse', async (ctx) => {
+  const user = await requirePermission(ctx, 'transactions.reverse');
+  const id = ctx.params.id;
+  const reason = ctx.body?.reason || 'Reversal';
+
+  const result = await withTx((db) => {
+    const groupId = user.group_id;
+    const now = nowISO();
+
+    // 1. Original contribution must exist and be posted
+    const contribution = db
+      .prepare(`SELECT * FROM contributions WHERE id = ? AND group_id = ?`)
+      .get(id, groupId);
+    if (!contribution) throw new ApiError('NOT_FOUND', 'Contribution not found.', 404);
+    if (contribution.status !== 'posted') {
+      throw new ApiError(
+        'BUSINESS_RULE',
+        `Cannot reverse a contribution in status "${contribution.status}".`,
+        422
+      );
+    }
+
+    // 2. Original transaction must exist and be posted
+    const originalTxn = db
+      .prepare(`SELECT * FROM transactions WHERE id = ? AND group_id = ?`)
+      .get(contribution.transaction_id, groupId);
+    if (!originalTxn) throw new ApiError('NOT_FOUND', 'Original transaction not found.', 404);
+    if (originalTxn.state !== 'posted') {
+      throw new ApiError(
+        'BUSINESS_RULE',
+        `Cannot reverse a transaction in state "${originalTxn.state}".`,
+        422
+      );
+    }
+
+    // 3. Load original ledger entries (must not have already been reversed)
+    if (originalTxn.reversed_by) {
+      throw new ApiError('CONFLICT', 'Transaction already reversed.', 409);
+    }
+
+    const originalEntries = db
+      .prepare(
+        `SELECT account_id, member_id, debit_minor, credit_minor, memo
+         FROM ledger_entries WHERE transaction_id = ?`
+      )
+      .all(originalTxn.id);
+
+    if (originalEntries.length === 0) {
+      throw new ApiError('INTERNAL_ERROR', 'Original transaction has no ledger entries.', 500);
+    }
+
+    // 4. Create the reversal transaction
+    const reversalTxnId = generateId('txn');
+    const datePart = now.slice(0, 10).replace(/-/g, '');
+    const reference = `TXN-${datePart}-REV-${shortRand()}`;
+
+    db.prepare(
+      `INSERT INTO transactions
+       (id, group_id, reference, description, transaction_type, state,
+        reverses, created_by, created_at, updated_at)
+       VALUES (?, ?, ?, ?, 'reversal', 'created', ?, ?, ?, ?)`
+    ).run(
+      reversalTxnId,
+      groupId,
+      reference,
+      `Reversal of ${originalTxn.reference}: ${reason}`,
+      originalTxn.id,
+      user.id,
+      now,
+      now
+    );
+
+    // 5. Flip every entry: Dr ↔ Cr
+    for (const e of originalEntries) {
+      db.prepare(
+        `INSERT INTO ledger_entries
+         (transaction_id, group_id, account_id, member_id, debit_minor, credit_minor,
+          memo, posted_at, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).run(
+        reversalTxnId,
+        groupId,
+        e.account_id,
+        e.member_id,
+        e.credit_minor,
+        e.debit_minor,
+        `Reversal: ${e.memo || ''}`.trim(),
+        now,
+        now
+      );
+    }
+
+    // 6. Post the reversal
+    try {
+      db.prepare(
+        `UPDATE transactions SET state = 'posted', posted_at = ?, updated_at = ? WHERE id = ?`
+      ).run(now, now, reversalTxnId);
+    } catch (e) {
+      throw new ApiError('BUSINESS_RULE', `Ledger rejected reversal: ${e.message}`, 422);
+    }
+
+    // 7. Mark original transaction reversed
+    db.prepare(
+      `UPDATE transactions SET state = 'reversed', reversed_by = ?, updated_at = ? WHERE id = ?`
+    ).run(reversalTxnId, now, originalTxn.id);
+
+    // 8. Mark contribution reversed
+    db.prepare(
+      `UPDATE contributions SET status = 'reversed', updated_at = ? WHERE id = ?`
+    ).run(now, id);
+
+    // 9. Audit
+    db.prepare(
+      `INSERT INTO audit_logs
+       (id, group_id, user_id, action, resource_type, resource_id, after_json, severity, created_at)
+       VALUES (?, ?, ?, 'contributions.reverse', 'contributions', ?, ?, 'warning', ?)`
+    ).run(
+      generateId('aud'),
+      groupId,
+      user.id,
+      id,
+      JSON.stringify({
+        reason,
+        original_transaction_id: originalTxn.id,
+        reversal_transaction_id: reversalTxnId,
+      }),
+      now
+    );
+
+    return {
+      contribution_id: id,
+      original_transaction_id: originalTxn.id,
+      reversal_transaction_id: reversalTxnId,
+      reference,
+      contribution_status: 'reversed',
+    };
+  });
+
+  return [201, { ok: true, data: result }];
+});
