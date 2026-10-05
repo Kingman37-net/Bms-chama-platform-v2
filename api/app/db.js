@@ -12,11 +12,27 @@ export function connect() {
   return db;
 }
 
-// Async-safe: awaits fn even if it returns a Promise, then closes.
+// Read-only or single-statement operations. Auto-commit.
 export async function withConn(fn) {
   const db = connect();
   try {
     return await fn(db);
+  } finally {
+    db.close();
+  }
+}
+
+// Atomic write operations. BEGIN ... COMMIT, rollback on error.
+export async function withTx(fn) {
+  const db = connect();
+  try {
+    db.exec('BEGIN');
+    const result = await fn(db);
+    db.exec('COMMIT');
+    return result;
+  } catch (e) {
+    try { db.exec('ROLLBACK'); } catch { /* already rolled back */ }
+    throw e;
   } finally {
     db.close();
   }
