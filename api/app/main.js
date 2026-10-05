@@ -5,6 +5,7 @@ import './routes/auth.js';
 import './routes/members.js';
 import './routes/accounts.js';
 import './routes/contributions.js';
+import './routes/loans.js';
 import { startServer } from './server.js';
 
 startServer();
