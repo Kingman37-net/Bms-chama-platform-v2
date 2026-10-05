@@ -12,10 +12,11 @@ export function connect() {
   return db;
 }
 
-export function withConn(fn) {
+// Async-safe: awaits fn even if it returns a Promise, then closes.
+export async function withConn(fn) {
   const db = connect();
   try {
-    return fn(db);
+    return await fn(db);
   } finally {
     db.close();
   }
