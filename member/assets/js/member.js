@@ -87,7 +87,7 @@ function apiFetch(path, options) {
 
 function formatKsh(minor) {
   var n = Number(minor || 0) / 100;
-  return 'KSh ' + n.toLocaleString('en-KE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  return 'KSh ' + n.toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function escapeHtml(s) {

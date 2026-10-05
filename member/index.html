@@ -23,30 +23,9 @@
       <button type="submit">Login</button>
     </form>
 
-    <div id="debug" style="margin-top:12px;padding:8px;background:#fee;color:#900;border-radius:6px;font-size:12px;display:none;word-break:break-all"></div>
-
     <a href="../docs/index.html" class="back-link">&larr; Back to BODMAS CHAMAA</a>
   </div>
 
-  <script>
-    // Debug: show any JS errors on the page
-    window.addEventListener('error', function (e) {
-      var d = document.getElementById('debug');
-      d.style.display = 'block';
-      d.textContent = 'JS Error: ' + e.message + ' @ ' + (e.filename || '').split('/').pop() + ':' + e.lineno;
-    });
-    // Failsafe: if member.js?v=5
-    document.addEventListener('DOMContentLoaded', function () {
-      var form = document.getElementById('memberLoginForm');
-      if (form && typeof window.__bmcAttached === 'undefined') {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          alert('member.js?v=5
-        });
-      }
-    });
-  </script>
-
-  <script src="assets/js/member.js?v=5" defer></script>
+  <script src="assets/js/member.js?v=7" defer></script>
 </body>
 </html>
