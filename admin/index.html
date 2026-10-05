@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | BODMAS CHAMAA</title>
+  <meta name="description" content="Restricted admin login for the BODMAS CHAMAA management system.">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body is-login">
+
+  <div class="admin-login-box">
+    <h1>Admin Login</h1>
+    <p class="sub">BODMAS CHAMAA Management</p>
+    <div class="badge-line"><span>RESTRICTED ACCESS</span></div>
+
+    <form id="adminLoginForm" autocomplete="off">
+      <label for="adminEmail">Admin Email</label>
+      <input type="email" id="adminEmail" name="adminEmail" placeholder="you@bodmaschamaa.com" required>
+
+      <label for="adminPassword">Password</label>
+      <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password" required>
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <a href="../docs/index.html" class="back-link">&larr; Back to BODMAS CHAMAA</a>
+  </div>
+
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

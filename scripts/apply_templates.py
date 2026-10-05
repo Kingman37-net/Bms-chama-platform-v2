@@ -6,15 +6,6 @@ Injects shared nav, footer, CSS link and JS script into HTML files
 across multiple zones (public site, member portal, admin system).
 
 Each zone has its own templates and its own CSS/JS bundle.
-
-Rules:
-  * Strips inline <style>, existing nav and footer
-  * Injects CSS <link> into <head>
-  * Injects JS <script defer> before </body>
-  * Injects nav after <body> and footer before </body>
-  * Auto-prefixes relative hrefs based on folder depth
-  * Skips files that already start with ../, /, http, mailto, tel, #
-  * Idempotent — safe to run repeatedly
 """
 
 import re
@@ -32,6 +23,8 @@ ZONES = [
         "css": "assets/css/style.css",
         "js": "assets/js/main.js",
         "skip_files": set(),
+        "exclude_dirs": {"assets"},
+        "prefix_style": "public",
     },
     {
         "name": "member",
@@ -40,10 +33,20 @@ ZONES = [
         "footer_file": "member-footer.html",
         "css": "assets/css/member.css",
         "js": "assets/js/member.js",
-        # Login page has its own shell — skip nav/footer injection
         "skip_files": {"index.html"},
-        # Exclude asset folder from processing
         "exclude_dirs": {"assets"},
+        "prefix_style": "member",
+    },
+    {
+        "name": "admin",
+        "root": ROOT / "admin",
+        "nav_file": "admin-nav.html",
+        "footer_file": "admin-footer.html",
+        "css": "assets/css/admin.css",
+        "js": "assets/js/admin.js",
+        "skip_files": {"index.html"},
+        "exclude_dirs": {"assets"},
+        "prefix_style": "admin",
     },
 ]
 
@@ -52,6 +55,9 @@ RE_NAV = re.compile(r'<nav\s+class="navbar".*?</nav>', re.DOTALL | re.IGNORECASE
 RE_MEMBER_TOPBAR = re.compile(r'<header\s+class="member-topbar".*?</header>', re.DOTALL | re.IGNORECASE)
 RE_MEMBER_SIDEBAR = re.compile(r'<aside\s+class="member-sidebar".*?</aside>', re.DOTALL | re.IGNORECASE)
 RE_MEMBER_OVERLAY = re.compile(r'<div\s+class="member-overlay".*?</div>', re.DOTALL | re.IGNORECASE)
+RE_ADMIN_TOPBAR = re.compile(r'<header\s+class="admin-topbar".*?</header>', re.DOTALL | re.IGNORECASE)
+RE_ADMIN_SIDEBAR = re.compile(r'<aside\s+class="admin-sidebar".*?</aside>', re.DOTALL | re.IGNORECASE)
+RE_ADMIN_OVERLAY = re.compile(r'<div\s+class="admin-overlay".*?</div>', re.DOTALL | re.IGNORECASE)
 RE_FOOTER = re.compile(r"<footer\b.*?</footer>", re.DOTALL | re.IGNORECASE)
 RE_CSS_LINK = re.compile(r'<link\s+rel="stylesheet"\s+href="[^"]*"[^>]*>', re.IGNORECASE)
 RE_JS_SCRIPT = re.compile(r'<script\s+src="[^"]*assets/js/[^"]*"[^>]*>\s*</script>', re.IGNORECASE)
@@ -75,21 +81,21 @@ def process_file(html_path: Path, zone: dict) -> bool:
 
     is_skipped = html_path.name in zone["skip_files"]
 
-    # 1. Strip inline style and existing shells
     content = RE_STYLE.sub("", content)
     content = RE_NAV.sub("", content)
     content = RE_MEMBER_TOPBAR.sub("", content)
     content = RE_MEMBER_SIDEBAR.sub("", content)
     content = RE_MEMBER_OVERLAY.sub("", content)
+    content = RE_ADMIN_TOPBAR.sub("", content)
+    content = RE_ADMIN_SIDEBAR.sub("", content)
+    content = RE_ADMIN_OVERLAY.sub("", content)
     content = RE_FOOTER.sub("", content)
 
-    # 2. CSS link before </head>
     content = RE_CSS_LINK.sub("", content)
     css_href = prefix + zone["css"]
     css_tag = f'  <link rel="stylesheet" href="{css_href}">\n'
     content = re.sub(r"</head>", css_tag + "</head>", content, count=1, flags=re.IGNORECASE)
 
-    # 3. JS before </body>
     content = RE_JS_SCRIPT.sub("", content)
     js_src = prefix + zone["js"]
     js_tag = f'  <script src="{js_src}" defer></script>\n'
@@ -101,7 +107,6 @@ def process_file(html_path: Path, zone: dict) -> bool:
             return True
         return False
 
-    # 4. Nav after <body>
     nav_html = (TEMPLATES / zone["nav_file"]).read_text(encoding="utf-8").strip()
     nav_html = prefix_links(nav_html, prefix)
     content = re.sub(
@@ -110,7 +115,6 @@ def process_file(html_path: Path, zone: dict) -> bool:
         content, count=1, flags=re.IGNORECASE,
     )
 
-    # 5. Footer before </body>
     footer_html = (TEMPLATES / zone["footer_file"]).read_text(encoding="utf-8").strip()
     footer_html = prefix_links(footer_html, prefix)
     content = re.sub(
