@@ -561,4 +561,111 @@ document.addEventListener('DOMContentLoaded', function () {
   initContributions();
   initLoans();
   initExpenses();
+  initMeetings();
+  initReports();
 });
+
+// ---------------- Meetings ----------------
+function initMeetings() {
+  var listEl = document.querySelector('[data-meetings-list]');
+  if (!listEl) return;
+
+  function load() {
+    listEl.innerHTML = '<p>Loading...</p>';
+    apiFetch('/meetings?per_page=100').then(function (res) {
+      if (!res.data || res.data.length === 0) {
+        listEl.innerHTML = '<p style="color:#6b7280">No meetings yet.</p>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < res.data.length; i++) {
+        var m = res.data[i];
+        html += '<div style="padding:14px;border:1px solid #d7dde3;border-radius:8px;margin-bottom:10px;background:#fff">';
+        html += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px">';
+        html += '<strong>' + escapeHtml(m.title) + '</strong>';
+        html += '<span style="padding:2px 10px;background:#e0e7ff;border-radius:10px;font-size:0.75rem;text-transform:uppercase;font-weight:600">' + escapeHtml(m.status) + '</span></div>';
+        html += '<div style="color:#6b7280;font-size:0.85rem">' + escapeHtml(m.scheduled_at || '') + ' &middot; ' + escapeHtml(m.location || '') + '</div>';
+        html += '</div>';
+      }
+      listEl.innerHTML = html;
+    }).catch(function (err) {
+      listEl.innerHTML = '<p style="color:#ef4444">' + escapeHtml(err.message) + '</p>';
+    });
+  }
+
+  var form = document.querySelector('[data-meeting-form]');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
+      busy(btn, 'Saving...');
+      var body = {
+        title: form.elements.title.value.trim(),
+        meeting_type: form.elements.meeting_type.value,
+        scheduled_at: form.elements.scheduled_at.value,
+        location: form.elements.location.value.trim() || null,
+        agenda: form.elements.agenda.value.trim() || null
+      };
+      apiFetch('/meetings', { method: 'POST', body: body }).then(function (res) {
+        toast('Meeting created', 'success');
+        form.reset();
+        unbusy(btn);
+        load();
+      }).catch(function (err) {
+        toast(err.message, 'error');
+        unbusy(btn);
+      });
+    });
+  }
+
+  load();
+}
+
+// ---------------- Financial Reports ----------------
+function initReports() {
+  var summaryEl = document.querySelector('[data-report-summary]');
+  if (!summaryEl) return;
+
+  Promise.all([
+    apiFetch('/accounts/1000/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/1010/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/1020/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/2000/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/1100/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/5000/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/4100/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/accounts/4200/balance').then(function (r) { return r.data.balance_minor; }).catch(function () { return 0; }),
+    apiFetch('/ledger/trial-balance').then(function (r) { return r.data; }).catch(function () { return null; })
+  ]).then(function (r) {
+    summaryEl.innerHTML = ''
+      + row('Cash on Hand', r[0])
+      + row('Bank Account', r[1])
+      + row('M-Pesa Float', r[2])
+      + row('Member Savings (liability)', r[3])
+      + row('Loans Receivable', r[4])
+      + row('Operating Expenses', r[5])
+      + row('Loan Interest Income', r[6])
+      + row('Investment Income', r[7]);
+
+    var tbEl = document.querySelector('[data-trial-balance]');
+    if (tbEl && r[8]) {
+      var tb = r[8];
+      tbEl.innerHTML = ''
+        + '<div style="padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between">'
+        +   '<span>Total Debits</span><strong>' + formatKsh(tb.total_debit_minor) + '</strong>'
+        + '</div>'
+        + '<div style="padding:12px 0;display:flex;justify-content:space-between">'
+        +   '<span>Total Credits</span><strong>' + formatKsh(tb.total_credit_minor) + '</strong>'
+        + '</div>'
+        + '<div style="padding:12px 0;font-weight:700;color:' + (tb.balanced ? '#10b981' : '#ef4444') + '">'
+        +   (tb.balanced ? '✅ Trial balance is balanced' : '❌ Trial balance is NOT balanced')
+        + '</div>';
+    }
+  });
+
+  function row(label, minor) {
+    return '<div style="padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between">'
+      + '<span>' + escapeHtml(label) + '</span>'
+      + '<strong>' + formatKsh(minor) + '</strong></div>';
+  }
+}

@@ -8,6 +8,7 @@ import './routes/contributions.js';
 import './routes/loans.js';
 import './routes/expenses.js';
 import './routes/income.js';
+import './routes/meetings.js';
 import { startServer } from './server.js';
 
 startServer();

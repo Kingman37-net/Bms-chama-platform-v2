@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meetings | BODMAS Admin</title>
-  
-  
-  
   <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body class="admin-body">
@@ -96,21 +93,6 @@
 <div class="admin-overlay" id="adminOverlay" hidden></div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <main class="admin-main">
     <div class="admin-page-header">
       <h1>Meetings</h1>
@@ -118,18 +100,47 @@
     </div>
 
     <div class="admin-card">
-      <h2>Coming Soon</h2>
-      <p>Meeting scheduling, agendas and invitations.</p>
+      <h2>Schedule Meeting</h2>
+      <form data-meeting-form style="display:grid;gap:12px;margin-top:8px">
+        <div>
+          <label style="font-size:0.85rem;font-weight:600">Title *</label>
+          <input name="title" required placeholder="Monthly General Meeting" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:0.85rem;font-weight:600">Type *</label>
+            <select name="meeting_type" required style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+              <option value="ordinary">Ordinary</option>
+              <option value="agm">AGM</option>
+              <option value="egm">EGM</option>
+              <option value="committee">Committee</option>
+              <option value="emergency">Emergency</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.85rem;font-weight:600">Scheduled At *</label>
+            <input name="scheduled_at" type="datetime-local" required style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:0.85rem;font-weight:600">Location</label>
+          <input name="location" placeholder="Bamburi Office" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+        </div>
+        <div>
+          <label style="font-size:0.85rem;font-weight:600">Agenda</label>
+          <textarea name="agenda" rows="3" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px;font-family:inherit"></textarea>
+        </div>
+        <button type="submit" style="padding:12px;background:#0b7fab;color:#fff;border:none;border-radius:6px;font-weight:700;font-size:1rem;cursor:pointer">Schedule Meeting</button>
+      </form>
+    </div>
+
+    <div class="admin-card">
+      <h2>All Meetings</h2>
+      <div data-meetings-list><p>Loading...</p></div>
     </div>
   </main>
 
-  
-
-  
-
-  
-
-  <script src="../assets/js/admin.js?v=1" defer></script>
+  <script src="../assets/js/admin.js?v=2" defer></script>
 <footer class="admin-footer">
   <p>&copy; 2026 BODMAS CHAMAA &mdash; Admin System</p>
 </footer>
