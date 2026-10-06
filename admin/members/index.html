@@ -4,26 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Members | BODMAS Admin</title>
-  
-  
   <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body class="admin-body">
 
   <main class="admin-main">
     <div class="admin-page-header">
-      <h1>All Members</h1>
-      <p>Directory of every registered member.</p>
+      <h1>Members</h1>
+      <p>Directory of registered members.</p>
     </div>
 
     <div class="admin-card">
-      <h2>Coming Soon</h2>
-      <p>Member list, search and filtering will be available here once the backend is live.</p>
+      <h2>Add New Member</h2>
+      <form data-member-form style="display:grid;gap:12px;margin-top:8px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:0.85rem;font-weight:600">Full Name *</label>
+            <input name="full_name" required style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+          </div>
+          <div>
+            <label style="font-size:0.85rem;font-weight:600">Phone</label>
+            <input name="phone" type="tel" placeholder="+254..." style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:0.85rem;font-weight:600">Email</label>
+            <input name="email" type="email" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+          </div>
+          <div>
+            <label style="font-size:0.85rem;font-weight:600">Gender</label>
+            <select name="gender" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+              <option value="">—</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:0.85rem;font-weight:600">Address</label>
+          <input name="address" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+        </div>
+        <div>
+          <label style="font-size:0.85rem;font-weight:600">Joined On</label>
+          <input name="joined_on" type="date" style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;font-size:1rem;margin-top:4px">
+        </div>
+        <button type="submit" style="padding:12px;background:#0b7fab;color:#fff;border:none;border-radius:6px;font-weight:700;font-size:1rem;cursor:pointer">Create Member</button>
+      </form>
+    </div>
+
+    <div class="admin-card">
+      <h2>All Members</h2>
+      <input data-members-search placeholder="Search by name..." style="width:100%;padding:10px;border:1px solid #d7dde3;border-radius:6px;margin-bottom:12px">
+      <div data-members-list><p>Loading...</p></div>
     </div>
   </main>
 
-  
-  
-  <script src="../assets/js/admin.js" defer></script>
+  <script src="../assets/js/admin.js?v=1" defer></script>
 </body>
 </html>

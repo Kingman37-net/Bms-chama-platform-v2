@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | BODMAS Admin</title>
-  
-  
   <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body class="admin-body">
@@ -95,16 +93,6 @@
 <div class="admin-overlay" id="adminOverlay" hidden></div>
 
 
-
-
-
-
-
-
-
-
-
-
   <main class="admin-main">
     <div class="admin-page-header">
       <h1>Admin Dashboard</h1>
@@ -112,47 +100,33 @@
     </div>
 
     <div class="admin-stats">
-      <div class="admin-stat"><span class="label">Total Members</span><span class="value">0</span></div>
-      <div class="admin-stat green"><span class="label">Total Savings</span><span class="value">KSh 0</span></div>
-      <div class="admin-stat orange"><span class="label">Active Loans</span><span class="value">KSh 0</span></div>
-      <div class="admin-stat"><span class="label">Total Investments</span><span class="value">KSh 0</span></div>
-      <div class="admin-stat green"><span class="label">Total Income</span><span class="value">KSh 0</span></div>
-      <div class="admin-stat red"><span class="label">Total Expenses</span><span class="value">KSh 0</span></div>
+      <div class="admin-stat"><span class="label">Total Members</span><span class="value" data-stat="members">—</span></div>
+      <div class="admin-stat green"><span class="label">Total Savings</span><span class="value" data-stat="savings">—</span></div>
+      <div class="admin-stat orange"><span class="label">Loans Outstanding</span><span class="value" data-stat="loans">—</span></div>
+      <div class="admin-stat"><span class="label">Cash on Hand</span><span class="value" data-stat="cash">—</span></div>
+      <div class="admin-stat green"><span class="label">Contributions</span><span class="value" data-stat="contributions">—</span></div>
+      <div class="admin-stat red"><span class="label">Expenses</span><span class="value" data-stat="expenses">—</span></div>
     </div>
 
     <div class="admin-actions">
       <a class="admin-action" href="members/index.html">Manage Members</a>
       <a class="admin-action" href="finance/contributions.html">Record Contribution</a>
       <a class="admin-action" href="loans/applications.html">Loan Applications</a>
-      <a class="admin-action" href="reports/financial.html">Financial Reports</a>
+      <a class="admin-action" href="finance/expenses.html">Manage Expenses</a>
     </div>
 
     <div class="admin-card">
-      <h2>Pending Actions</h2>
-      <ul>
-        <li>Membership applications awaiting review</li>
-        <li>Loan applications awaiting approval</li>
-        <li>Unreconciled payments</li>
-      </ul>
-      <p style="color:#6b7280;font-size:0.9rem;margin-top:8px;">These will populate once the backend (Phase 6) is live.</p>
+      <h2>Active Loans</h2>
+      <div data-recent-loans><p>Loading...</p></div>
     </div>
 
     <div class="admin-card">
-      <h2>Recent Transactions</h2>
-      <p>No transactions yet. Contributions, repayments, expenses and income will appear here in real time.</p>
-    </div>
-
-    <div class="admin-card">
-      <h2>Security &amp; Audit Alerts</h2>
-      <p>Login attempts, permission changes and financial corrections will be logged here.</p>
+      <h2>Security &amp; Audit</h2>
+      <p>Login attempts, permission changes and financial corrections are logged to the audit trail.</p>
     </div>
   </main>
 
-  
-
-  
-
-  <script src="assets/js/admin.js" defer></script>
+  <script src="assets/js/admin.js?v=1" defer></script>
 <footer class="admin-footer">
   <p>&copy; 2026 BODMAS CHAMAA &mdash; Admin System</p>
 </footer>
