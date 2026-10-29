@@ -8,20 +8,41 @@ document.addEventListener('DOMContentLoaded', function () {
   var navMenu = document.querySelector('.nav-menu');
 
   if (hamburger && navMenu) {
+    function setMenuOpen(open) {
+      navMenu.classList.toggle('open', open);
+      hamburger.classList.toggle('active', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
     hamburger.addEventListener('click', function () {
-      navMenu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      var expanded = hamburger.getAttribute('aria-expanded') === 'true';
-      hamburger.setAttribute('aria-expanded', !expanded);
+      var isOpen = navMenu.classList.contains('open');
+      setMenuOpen(!isOpen);
     });
 
-    // Close on link click (mobile UX)
+    // Close the menu after selecting a navigation link.
     navMenu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
-        navMenu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', 'false');
+        setMenuOpen(false);
       });
+    });
+
+    // Close the menu when the user taps outside it.
+    document.addEventListener('click', function (event) {
+      if (
+        navMenu.classList.contains('open') &&
+        !navMenu.contains(event.target) &&
+        !hamburger.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
+    });
+
+    // Support the Escape key.
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && navMenu.classList.contains('open')) {
+        setMenuOpen(false);
+        hamburger.focus();
+      }
     });
   }
 

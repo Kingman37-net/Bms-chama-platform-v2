@@ -348,3 +348,15 @@ body.member-body.is-login {
   .member-main { padding: 18px 12px 50px; }
   .member-card { padding: 18px; }
 }
+
+
+/* BODMAS CHAMAA branding on login pages */
+.login-logo {
+  display: block;
+  width: 100%;
+  max-width: 140px;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+  margin: 0 auto 1.25rem;
+}
