@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | BODMAS Admin</title>
-
-
-  <link rel="stylesheet" href="assets/css/admin.css">
-</head>
-<body class="admin-body">
 <header class="admin-topbar">
   <button class="admin-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 
   <a href="dashboard.html" class="admin-brand">
-    <img src="../docs/assets/images/bodmas-chamaa-logo.png" alt="BODMAS CHAMAA" height="30">
+    <img src="https://i.ibb.co/d4vff5ts/logo.png" alt="BODMAS" height="30">
     <span>BODMAS Admin</span>
     <span class="admin-badge">ADMIN</span>
   </a>
@@ -89,62 +78,7 @@
       <a href="settings/index.html">Settings</a>
     </div>
 
-    <a href="../docs/index.html" class="admin-back">&larr; Public Site</a>
+    <a href="{{ROOT}}docs/index.html" class="admin-back">&larr; Public Site</a>
   </nav>
 </aside>
 <div class="admin-overlay" id="adminOverlay" hidden></div>
-
-
-
-
-
-
-
-
-
-
-
-
-  <main class="admin-main">
-    <div class="admin-page-header">
-      <h1>Admin Dashboard</h1>
-      <p>System-wide overview of BODMAS CHAMAA operations.</p>
-    </div>
-
-    <div class="admin-stats">
-      <div class="admin-stat"><span class="label">Total Members</span><span class="value" data-stat="members">—</span></div>
-      <div class="admin-stat green"><span class="label">Total Savings</span><span class="value" data-stat="savings">—</span></div>
-      <div class="admin-stat orange"><span class="label">Loans Outstanding</span><span class="value" data-stat="loans">—</span></div>
-      <div class="admin-stat"><span class="label">Cash on Hand</span><span class="value" data-stat="cash">—</span></div>
-      <div class="admin-stat green"><span class="label">Contributions</span><span class="value" data-stat="contributions">—</span></div>
-      <div class="admin-stat red"><span class="label">Expenses</span><span class="value" data-stat="expenses">—</span></div>
-    </div>
-
-    <div class="admin-actions">
-      <a class="admin-action" href="members/index.html">Manage Members</a>
-      <a class="admin-action" href="finance/contributions.html">Record Contribution</a>
-      <a class="admin-action" href="loans/applications.html">Loan Applications</a>
-      <a class="admin-action" href="finance/expenses.html">Manage Expenses</a>
-    </div>
-
-    <div class="admin-card">
-      <h2>Active Loans</h2>
-      <div data-recent-loans><p>Loading...</p></div>
-    </div>
-
-    <div class="admin-card">
-      <h2>Security &amp; Audit</h2>
-      <p>Login attempts, permission changes and financial corrections are logged to the audit trail.</p>
-    </div>
-  </main>
-
-
-
-
-
-  <script src="assets/js/admin.js" defer></script>
-<footer class="admin-footer">
-  <p>&copy; 2026 BODMAS CHAMAA &mdash; Admin System</p>
-</footer>
-</body>
-</html>

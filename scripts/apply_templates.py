@@ -23,7 +23,7 @@ ZONES = [
         "css": "assets/css/style.css",
         "js": "assets/js/main.js",
         "skip_files": set(),
-        "exclude_dirs": {"assets"},
+        "exclude_dirs": {"assets", "member", "admin"},
         "prefix_style": "public",
     },
     {
