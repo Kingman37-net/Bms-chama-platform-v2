@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply for Membership | BODMAS CHAMAA</title>
+  <link rel="stylesheet" href="assets/css/member.css">
+</head>
+<body class="member-body is-login">
+  <div class="member-login-box">
+    <img class="login-logo" src="assets/images/bodmas-chamaa-logo.png" alt="BODMAS CHAMAA Logo">
+    <h1>Apply for Membership</h1>
+    <p class="sub">BODMAS CHAMAA Portal</p>
+    
+    <form id="memberRegisterForm" autocomplete="off" novalidate>
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" placeholder="e.g. John Doe" required>
+      
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="e.g. john@example.com" required>
+      
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="e.g. 0712345678" required>
+      
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required>
+      
+      <button type="submit">Submit Application</button>
+    </form>
+    
+    <a href="index.html" class="back-link">&larr; Already have an account? Login</a>
+    <a href="../membership.html" class="back-link" style="margin-top: 10px; display: block;">&larr; Back to Membership Info</a>
+  </div>
+  <script src="assets/js/member.js" defer></script>
+</body>
+</html>

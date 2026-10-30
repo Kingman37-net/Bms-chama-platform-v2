@@ -1,11 +1,12 @@
 // Authentication routes.
 
 import { route } from '../server.js';
-import { withConn } from '../db.js';
+import { withConn, withTx } from '../db.js';
 import { ApiError } from '../errors.js';
 import { config } from '../config.js';
 import {
   verifyPassword,
+  hashPassword,
   signJWT,
   generateId,
   generateRefreshToken,
@@ -23,6 +24,71 @@ function futureISO(days = 0, seconds = 0) {
   const t = Date.now() + days * 86400_000 + seconds * 1000;
   return new Date(t).toISOString();
 }
+
+// ---------------- POST /auth/register ----------------
+
+route('POST', '/auth/register', async (ctx) => {
+  const { display_name, email, password } = ctx.body || {};
+
+  if (!display_name || !email || !password) {
+    throw new ApiError('VALIDATION_FAILED', 'display_name, email, and password are required.', 400);
+  }
+
+  if (password.length < 6) {
+    throw new ApiError('VALIDATION_FAILED', 'Password must be at least 6 characters.', 400);
+  }
+
+  const result = await withTx(async (db) => {
+    // 1. Check if email already exists
+    const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (existingUser) {
+      throw new ApiError('CONFLICT', 'An account with this email already exists.', 409);
+    }
+
+    // 2. Get the default group
+    const group = db.prepare('SELECT id FROM groups LIMIT 1').get();
+    if (!group) {
+      throw new ApiError('INTERNAL_ERROR', 'System configuration error: No group found.', 500);
+    }
+
+    // 3. Prepare User Data
+    const userId = generateId('usr');
+    const password_hash = await hashPassword(password);
+    const now = nowISO();
+
+    // 4. Insert User
+    db.prepare(
+      `INSERT INTO users (id, group_id, email, display_name, password_hash, is_active, is_locked, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 1, 0, ?, ?)`
+    ).run(userId, group.id, email, display_name, password_hash, now, now);
+
+    // 5. Create Membership
+    const membershipId = generateId('mem');
+    // We use userId for member_id to satisfy the Foreign Key constraint!
+    const memberNumber = 'BMS-' + Math.floor(1000 + Math.random() * 9000).toString();
+    
+    db.prepare(
+      `INSERT INTO memberships (id, user_id, group_id, member_id, member_number, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 'active', ?, ?)`
+    ).run(membershipId, userId, group.id, userId, memberNumber, now, now);
+
+    // 6. Assign Default 'member' Role
+    const memberRole = db.prepare("SELECT id FROM roles WHERE code = 'member'").get();
+    if (memberRole) {
+      db.prepare(
+        `INSERT INTO membership_roles (membership_id, role_id) VALUES (?, ?)`
+      ).run(membershipId, memberRole.id);
+    }
+
+    return {
+      ok: true,
+      message: 'Registration successful. You can now log in.',
+      data: { user_id: userId, member_number: memberNumber }
+    };
+  });
+
+  return result;
+});
 
 // ---------------- POST /auth/login ----------------
 
