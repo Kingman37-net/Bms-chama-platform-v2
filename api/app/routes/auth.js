@@ -28,7 +28,7 @@ function futureISO(days = 0, seconds = 0) {
 // ---------------- POST /auth/register ----------------
 
 route('POST', '/auth/register', async (ctx) => {
-  const { display_name, email, password } = ctx.body || {};
+  const { display_name, email, password, phone } = ctx.body || {};
 
   if (!display_name || !email || !password) {
     throw new ApiError('VALIDATION_FAILED', 'display_name, email, and password are required.', 400);
@@ -51,33 +51,39 @@ route('POST', '/auth/register', async (ctx) => {
       throw new ApiError('INTERNAL_ERROR', 'System configuration error: No group found.', 500);
     }
 
-    // 3. Prepare User Data
+    // 3. Prepare Data
     const userId = generateId('usr');
+    const memberId = generateId('mbr');
+    const membershipId = generateId('mem');
     const password_hash = await hashPassword(password);
     const now = nowISO();
+    const memberNumber = 'BMS-' + Math.floor(1000 + Math.random() * 9000).toString();
 
-    // 4. Insert User
+    // 4. Insert User (Auth)
     db.prepare(
       `INSERT INTO users (id, group_id, email, display_name, password_hash, is_active, is_locked, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, 1, 0, ?, ?)`
     ).run(userId, group.id, email, display_name, password_hash, now, now);
 
-    // 5. Create Membership
-    const membershipId = generateId('mem');
-    // We use userId for member_id to satisfy the Foreign Key constraint!
-    const memberNumber = 'BMS-' + Math.floor(1000 + Math.random() * 9000).toString();
-    
+    // 5. Insert Member Profile
+    db.prepare(
+      `INSERT INTO members (id, group_id, full_name, email, phone, status, created_at, updated_at, created_by, updated_by)
+       VALUES (?, ?, ?, ?, ?, 'active', ?, ?, ?, ?)`
+    ).run(memberId, group.id, display_name, email, phone || null, now, now, userId, userId);
+
+    // 6. Create Membership Link
     db.prepare(
       `INSERT INTO memberships (id, user_id, group_id, member_id, member_number, status, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, 'active', ?, ?)`
-    ).run(membershipId, userId, group.id, userId, memberNumber, now, now);
+    ).run(membershipId, userId, group.id, memberId, memberNumber, now, now);
 
-    // 6. Assign Default 'member' Role
+    // 7. Assign Default 'member' Role (NO ID COLUMN!)
     const memberRole = db.prepare("SELECT id FROM roles WHERE code = 'member'").get();
     if (memberRole) {
       db.prepare(
-        `INSERT INTO membership_roles (membership_id, role_id) VALUES (?, ?)`
-      ).run(membershipId, memberRole.id);
+        `INSERT INTO membership_roles (membership_id, role_id, assigned_at, assigned_by)
+         VALUES (?, ?, ?, ?)`
+      ).run(membershipId, memberRole.id, now, userId);
     }
 
     return {
