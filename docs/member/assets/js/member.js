@@ -5,7 +5,7 @@ var API_BASE = (function () {
   var h = window.location.hostname;
   return (h === 'localhost' || h === '127.0.0.1')
     ? 'http://localhost:8000'
-    : 'https://receive-premier-cio-rebel.trycloudflare.com';
+    : 'https://andreas-improved-makeup-among.trycloudflare.com';
 })();
 
 function sget(k) { return sessionStorage.getItem(k); }
