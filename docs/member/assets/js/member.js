@@ -5,7 +5,7 @@ var API_BASE = (function () {
   var h = window.location.hostname;
   return (h === 'localhost' || h === '127.0.0.1')
     ? 'http://localhost:8000'
-    : 'https://dispersed-preppy-iodize.ngrok-free.dev';
+    : 'YOUR_NEW_CLOUDFLARE_URL';
 })();
 
 function sget(k) { return sessionStorage.getItem(k); }
